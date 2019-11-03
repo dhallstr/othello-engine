@@ -1,0 +1,15 @@
+{
+	"version": 1.0,
+	"teamWhite": "Bot Name",
+	"teamBlack": "Bot Name",
+	"winner": "white",
+	"totalTime": 100.0,
+	"turns": [
+		{
+			"turn": 0,
+			"player": "white",
+			"time": 1.1,
+			"state": [['-', '-', ...], ...],
+		}, ...
+	]
+}
