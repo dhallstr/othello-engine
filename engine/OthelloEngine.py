@@ -25,7 +25,7 @@ class GameEngine:
       self.total_time = 0
       self.game_state = [['-' for i in range(n)] for j in range(n)]
             
-      # TODO Below:
+      # TODO Task 4 Below:
       # Initiaize white_team_file and black_team_file's AIs
       # (might want to refer to http://www.blog.pythonlibrary.org/2012/07/31/advanced-python-how-to-dynamically-load-modules-or-classes/)
       self.white_team = None
@@ -37,7 +37,7 @@ class GameEngine:
       
    # Makes all of the general calls to play the game
    def play_game(self):
-      # TODO Below:
+      # TODO Task 6 Below:
       # Loop through all the moves, calling .get_move(board_state) for each team.
       #       .get_move returns a move. Example move: ('B', (4, 5))
       #       Make sure that the bot doesn't throw an error (try-except) and doesn't exceed
@@ -53,7 +53,7 @@ class GameEngine:
    
    # Check valid move method
    def check_valid(self, move):
-      # TODO Below:
+      # TODO Task 5 Below:
       # move format: ('B', (i, j)) or ('B', None)
       # check if the given move is valid for board_state
       # A move of None indicates the player is skipping their turn. This is only valid if
@@ -64,7 +64,7 @@ class GameEngine:
    
    # Perform move
    def update_board(self, move):
-      # TODO Below:
+      # TODO Task 7 Below:
       # move format: ('B', (i, j)) or ('B', None)
       # update the board state given the current move and put the move in all_moves
       # if the move is None, do nothing
@@ -73,7 +73,7 @@ class GameEngine:
       
    # Check for end condition
    def check_end(self):
-      # TODO Below:
+      # TODO Task 8 Below:
       # Check the board to see if the game can continue
       # If the game is over return the winner: 'W', 'B', or 'T'
       # Otherwise, return None
@@ -82,14 +82,14 @@ class GameEngine:
    # write to output file
    # winner should be either 'W' or 'B' or 'T'
    def output_game(self, winner):
-      # TODO Below:
+      # TODO Task 2 Below:
       # write a game file to self.output_file
       # See the example json formatted file for details
       # Recall that all_moves will contain a list of every move in the game
       pass
 
 def get_all_moves(board_state, player):
-   # TODO Return a list of all possible moves for the given player ('W' or 'B')
+   # TODO Task 9 Return a list of all possible moves for the given player ('W' or 'B')
    # Example return value: [('W', (2, 5)), ('W', (6, 4)), ... ]
    pass
 
