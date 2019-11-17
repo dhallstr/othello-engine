@@ -5,7 +5,7 @@ class GameEngine:
     # output_file is the name of the file the game will be recorded to
 	# nxn is the size of the board. Default is 8x8
 	# time_limit is the amount of time for each turn in seconds
-	def init(self, team_white, team_black, output_file, n = 8, time_limit = 2.0):
+	def __init__(self, team_white, team_black, output_file, n = 8, time_limit = 2.0):
 		self.n = n
 		self.time_limit = time_limit
         self.output_file = output_file
