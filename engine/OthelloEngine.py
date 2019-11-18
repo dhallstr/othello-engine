@@ -1,3 +1,4 @@
+import time
 
 class GameEngine:
    # white_team_file will be the file name of the white team's AI file
@@ -48,9 +49,63 @@ class GameEngine:
       # remember to add each move to all_moves
       # Also track individual turn times as well as total time
       # Return the winner: 'W', 'B', or 'T'
-      pass
+
+      # Sanity check for self.check_end()
+      while self.game_state.count('-'):
+         # Increment turn (start at turn 1)
+         self.turn += 1
+
+         # Each team takes their turn
+         for team in (self.white_team, self.black_team):
+            move = self.execute_turn(team)
+
+            # execute_turn returns a character IFF the team's move
+            # causes them to lose automatically
+            if type(move) != tuple:
+               return move
+
+            # Else update the board and check if the game is over
+            else:
+               self.update_board(move)
+
+            if self.check_end(self.game_state):
+               return self.calculateWinner()
+
+      # Should be unreachable, if check_end functions
+      return self.calculateWinner()
+
+   # Abstract turn taking
+   def execute_turn(self, team):
+      try:
+         start = time.time()
+         move = team.get_move(self.game_state)
+         turnTime = time.time() - start
+
+         if turnTime > self.t or not self.check_valid(move):
+            raise
+
+      # Instant loss for the current team
+      # if their turn exceeds the time limit
+      # or their move is not valid
+      # or their class raises an exception
+      except:
+         return 'B' if move[0] == 'W' else 'W'
+
+      return move
+
+   # Returns winner or tie
+   def calculateWinner(self):
+      Wscore = self.game_state.count('W')
+      Bscore = self.game_state.count('B')
       
-   
+      winner = 'T'
+      if Wscore > Bscore:
+         winner = 'W'
+      elif Bscore > Wscore:
+         winner = 'B'
+
+      return winner
+
    # Check valid move method
    def check_valid(self, move):
       # TODO Task 5 Below:
