@@ -54,9 +54,6 @@ class GameEngine:
 
       # Sanity check for self.check_end()
       while '-' in row in self.game_state:
-         # Increment turn (start at turn 1)
-         self.turn_number += 1
-
          # Each team takes their turn
          for team in (self.white_team, self.black_team):
             move = self.execute_turn(team)
@@ -73,6 +70,9 @@ class GameEngine:
 
             if self.check_end(self.game_state):
                return self.calculateWinner()
+
+         # Increment turn
+         self.turn_number += 1
 
       # Should be unreachable, if check_end functions
       return self.calculateWinner()
@@ -95,14 +95,14 @@ class GameEngine:
 
          self.total_time += turnTime
 
+         return move
+
       # Instant loss for the current team
       # if their turn exceeds the time limit
       # or their move is not valid
       # or their class raises an exception
       except:
          return 'B' if move[0] == 'W' else 'W'
-
-      return move
 
    # Returns winner or tie
    def calculateWinner(self):
