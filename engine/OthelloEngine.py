@@ -23,6 +23,7 @@ class GameEngine:
       # total time is the current sum of all of the player's turns
       self.all_moves = []
       self.turn_number = 0
+      self.turn_times = {}
       self.total_time = 0
       self.game_state = [['-' for i in range(n)] for j in range(n)]
             
@@ -51,9 +52,9 @@ class GameEngine:
       # Return the winner: 'W', 'B', or 'T'
 
       # Sanity check for self.check_end()
-      while self.game_state.count('-'):
+      while '-' in row in self.game_state:
          # Increment turn (start at turn 1)
-         self.turn += 1
+         self.turn_number += 1
 
          # Each team takes their turn
          for team in (self.white_team, self.black_team):
@@ -67,6 +68,7 @@ class GameEngine:
             # Else update the board and check if the game is over
             else:
                self.update_board(move)
+               self.all_moves.append(move)
 
             if self.check_end(self.game_state):
                return self.calculateWinner()
@@ -83,6 +85,11 @@ class GameEngine:
 
          if turnTime > self.t or not self.check_valid(move):
             raise
+
+         if not team.__name__ in self.turn_times:
+            self.turn_times.update(team.__name__, [turnTime])
+         else:
+            self.turn_times[team.__name__].append(turnTime)
 
       # Instant loss for the current team
       # if their turn exceeds the time limit
