@@ -20,6 +20,7 @@ class GameEngine:
       #          "move": [1, 5]
       #        }
       # turn_number track the current turn number
+      # turn_times keys each team's color character ('W' or 'B') to a list of their turn times
       # total time is the current sum of all of the player's turns
       self.all_moves = []
       self.turn_number = 0
@@ -86,10 +87,13 @@ class GameEngine:
          if turnTime > self.t or not self.check_valid(move):
             raise
 
+         # Time keeping
          if not move(0) in self.turn_times:
             self.turn_times.update(move(0), [turnTime])
          else:
             self.turn_times[move(0)].append(turnTime)
+
+         self.total_time += turnTime
 
       # Instant loss for the current team
       # if their turn exceeds the time limit
@@ -102,8 +106,8 @@ class GameEngine:
 
    # Returns winner or tie
    def calculateWinner(self):
-      Wscore = self.game_state.count('W')
-      Bscore = self.game_state.count('B')
+      Wscore = sum([row.count('W') for row in self.game_state])
+      Bscore = sum([row.count('B') for row in self.game_state])
       
       winner = 'T'
       if Wscore > Bscore:
