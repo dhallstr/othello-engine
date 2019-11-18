@@ -86,10 +86,10 @@ class GameEngine:
          if turnTime > self.t or not self.check_valid(move):
             raise
 
-         if not team.__name__ in self.turn_times:
-            self.turn_times.update(team.__name__, [turnTime])
+         if not move(0) in self.turn_times:
+            self.turn_times.update(move(0), [turnTime])
          else:
-            self.turn_times[team.__name__].append(turnTime)
+            self.turn_times[move(0)].append(turnTime)
 
       # Instant loss for the current team
       # if their turn exceeds the time limit
