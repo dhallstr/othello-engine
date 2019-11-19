@@ -77,10 +77,7 @@ class GameEngine:
       # If the game is over return the winner: 'W', 'B', or 'T'
       # Otherwise, return None
 
-      # "The dark player moves first", https://en.wikipedia.org/wiki/Reversi#Rules
-      current_player = 'W' if self.turn_number % 2 else 'B'
-
-      if len(get_all_moves(self.game_state, current_player)) != 0:
+      if len(get_all_moves(self.game_state, 'W')) != 0 or len(get_all_moves(self.game_state, 'B')) != 0:
          return None
 
       white_count = sum(row.count('W') for row in self.game_state)
