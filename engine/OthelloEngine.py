@@ -56,7 +56,7 @@ class GameEngine:
       while '-' in row in self.game_state:
          # Each team takes their turn
          for team in (self.white_team, self.black_team):
-            move = self.execute_turn(team)
+            move = self.record_turn(team)
 
             # execute_turn returns a character IFF the team's move
             # causes them to lose automatically
@@ -69,16 +69,16 @@ class GameEngine:
                self.all_moves.append(move)
 
             if self.check_end(self.game_state):
-               return self.calculateWinner()
+               return self.calculate_winner()
 
          # Increment turn
          self.turn_number += 1
 
       # Should be unreachable, if check_end functions
-      return self.calculateWinner()
+      return self.calculate_winner()
 
    # Abstract turn taking
-   def execute_turn(self, team):
+   def record_turn(self, team):
       try:
          start = time.time()
          move = team.get_move(self.game_state)
@@ -102,10 +102,10 @@ class GameEngine:
       # or their move is not valid
       # or their class raises an exception
       except:
-         return 'B' if move[0] == 'W' else 'W'
+         return 'B' if team.team_type == 'W' else 'W'
 
    # Returns winner or tie
-   def calculateWinner(self):
+   def calculate_winner(self):
       Wscore = sum([row.count('W') for row in self.game_state])
       Bscore = sum([row.count('B') for row in self.game_state])
       
