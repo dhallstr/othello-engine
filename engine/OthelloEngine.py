@@ -68,14 +68,15 @@ class GameEngine:
                self.update_board(move)
                self.all_moves.append(move)
 
-            if self.check_end(self.game_state):
-               return self.calculate_winner()
+               gameEnd = self.check_end();
+               if gameEnd != None:
+                  return gameEnd
 
          # Increment turn
          self.turn_number += 1
 
       # Should be unreachable, if check_end functions
-      return self.calculate_winner()
+      return self.check_end()
 
    # Abstract turn taking
    def record_turn(self, team):
@@ -103,19 +104,6 @@ class GameEngine:
       # or their class raises an exception
       except:
          return 'B' if team.team_type == 'W' else 'W'
-
-   # Returns winner or tie
-   def calculate_winner(self):
-      Wscore = sum([row.count('W') for row in self.game_state])
-      Bscore = sum([row.count('B') for row in self.game_state])
-      
-      winner = 'T'
-      if Wscore > Bscore:
-         winner = 'W'
-      elif Bscore > Wscore:
-         winner = 'B'
-
-      return winner
 
    # Check valid move method
    def check_valid(self, move):
