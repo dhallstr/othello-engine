@@ -24,7 +24,7 @@ class GameEngine:
       # total time is the current sum of all of the player's turns
       self.all_moves = []
       self.turn_number = 0
-      self.turn_times = {}
+      self.turn_times = {'W': [], 'B': []}
       self.total_time = 0
       self.game_state = [['-' for i in range(n)] for j in range(n)]
             
@@ -89,10 +89,7 @@ class GameEngine:
             raise
 
          # Time keeping
-         if not move(0) in self.turn_times:
-            self.turn_times.update(move(0), [turnTime])
-         else:
-            self.turn_times[move(0)].append(turnTime)
+         self.turn_times[team.team_type].append(turnTime)
 
          self.total_time += turnTime
 
