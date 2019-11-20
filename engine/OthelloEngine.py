@@ -1,3 +1,4 @@
+import time
 
 class GameEngine:
    # white_team_file will be the file name of the white team's AI file
@@ -19,9 +20,11 @@ class GameEngine:
       #          "move": [1, 5]
       #        }
       # turn_number track the current turn number
+      # turn_times keys each team's color character ('W' or 'B') to a list of their turn times
       # total time is the current sum of all of the player's turns
       self.all_moves = []
       self.turn_number = 0
+      self.turn_times = {'W': [], 'B': []}
       self.total_time = 0
       self.game_state = [['-' for i in range(n)] for j in range(n)]
 
@@ -48,8 +51,59 @@ class GameEngine:
       # remember to add each move to all_moves
       # Also track individual turn times as well as total time
       # Return the winner: 'W', 'B', or 'T'
-      pass
 
+      # Sanity check for self.check_end()
+      while '-' in row in self.game_state:
+         # Each team takes their turn
+         for team in (self.black_team, self.white_team):
+            move = self.record_turn(team)
+
+            # record_turn returns a character IFF the team's move
+            # causes them to lose automatically
+            if type(move) != tuple:
+               return move
+
+            # Else update the board and check if the game is over
+            else:
+               self.update_board(move)
+               self.all_moves.append(move)
+
+               gameEnd = self.check_end();
+               if gameEnd != None:
+                  return gameEnd
+
+               # Increment turn
+               # Odd turns white, even turns black
+               self.turn_number += 1
+
+      # Should be unreachable, if check_end functions
+      return self.check_end()
+
+   # Abstract turn taking
+   def record_turn(self, team):
+      try:
+         start = time.time()
+         move = team.get_move(self.game_state)
+         turnTime = time.time() - start
+
+         if turnTime > self.time_limit:
+            raise Exception("Team {} exceeded their time limit: {}".format(team.team_type, turnTime))
+         elif not self.check_valid(move):
+            raise Exception("Team {} made an invalid move: {}".format(team.team_type, move))
+
+         # Time keeping
+         self.turn_times[team.team_type].append(turnTime)
+
+         self.total_time += turnTime
+
+         return move
+
+      # Instant loss for the current team
+      # if their turn exceeds the time limit
+      # or their move is not valid
+      # or their class raises an exception
+      except:
+         return 'B' if team.team_type == 'W' else 'W'
 
    # Check valid move method
    def check_valid(self, move):
