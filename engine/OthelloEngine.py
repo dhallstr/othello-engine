@@ -145,7 +145,7 @@ class GameEngine:
             else:
                if self.game_state[i][j] == color:
                   #it's the same color, go back and change till we are at c+1
-                  for index in range(j - c):
+                  for index in range(j - c - 1):
                      self.game_state[i][j - index - 1] = color
                #end loop
                break
@@ -161,7 +161,7 @@ class GameEngine:
             else:
                if self.game_state[i][j] == color:
                   #it's the same color, go back and change till we are at r+1,c+1
-                  for index in range(j - c):
+                  for index in range(j - c - 1):
                      self.game_state[i - index - 1][j - index - 1] = color
                #end loop
                break
@@ -176,7 +176,7 @@ class GameEngine:
             else:
                if self.game_state[i][j] == color:
                   #it's the same color, go back and change till we are at r+1
-                  for index in range(i - r):
+                  for index in range(i - r - 1):
                      self.game_state[i - index - 1][j] = color
                #end loop
                break
@@ -192,7 +192,7 @@ class GameEngine:
             else:
                if self.game_state[i][j] == color:
                   #it's the same color, go back and change till we are at r+1
-                  for index in range(i - r):
+                  for index in range(i - r - 1):
                      self.game_state[i - index - 1][j + index + 1] = color
                #end loop
                break
