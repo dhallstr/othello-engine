@@ -58,7 +58,7 @@ class GameEngine:
          for team in (self.white_team, self.black_team):
             move = self.record_turn(team)
 
-            # execute_turn returns a character IFF the team's move
+            # record_turn returns a character IFF the team's move
             # causes them to lose automatically
             if type(move) != tuple:
                return move
@@ -86,8 +86,10 @@ class GameEngine:
          move = team.get_move(self.game_state)
          turnTime = time.time() - start
 
-         if turnTime > self.time_limit or not self.check_valid(move):
-            raise
+         if turnTime > self.time_limit:
+            raise Exception("Team {} exceeded their time limit: {}".format(team.team_type, turnTime))
+         elif not self.check_valid(move):
+            raise Exception("Team {} made an invalid move: {}".format(team.team_type, move))
 
          # Time keeping
          self.turn_times[team.team_type].append(turnTime)
