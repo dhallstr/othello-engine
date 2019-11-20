@@ -102,7 +102,43 @@ class GameEngine:
 def get_all_moves(board_state, player):
    # TODO Task 9 Return a list of all possible moves for the given player ('W' or 'B')
    # Example return value: [('W', (2, 5)), ('W', (6, 4)), ... ]
-   pass
+   moves = []
+   adjacencies = get_adjacencies()
+   for x in range(len(board_state)):
+      for y in range(len(board_state[x])):
+         for adjacency in adjacencies:
+            if(is_valid_move(x, y, adjacency[0], adjacency[1], board_state, player, False)):
+               moves.append((player, (x, y)))
+               break
+   return moves
+
+def get_adjacencies():
+   adjacencies = []
+   for dx in range(-1, 2):
+      for dy in range(-1, 2):
+         if(dx == 0 and dy == 0):
+            continue
+         adjacencies.append((dx, dy))
+   return adjacencies
+
+def is_valid_move(x, y, dx, dy, board_state, player, surrounds):
+   if(board_state[x][y] != '-' and not surrounds):
+      return False
+   newx = x + dx
+   newy = y + dy
+   board_size = len(board_state)
+   if(player == 'B'):
+      enemy = 'W'
+   else:
+      enemy = 'B'
+   if(newx < 0 or newx >= board_size or newy < 0 or newy >= board_size):
+      return False
+   newcolor = board_state[newx][newy]
+   if(newcolor == enemy):
+      return is_valid_move(newx, newy, dx, dy, board_state, player, True)
+   if(newcolor == player):
+      return surrounds
+   return False
 
 if __name__ == "__main__":
    if len(argv) >= 3:
