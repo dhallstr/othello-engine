@@ -55,7 +55,7 @@ class GameEngine:
       # Sanity check for self.check_end()
       while '-' in row in self.game_state:
          # Each team takes their turn
-         for team in (self.white_team, self.black_team):
+         for team in (self.black_team, self.white_team):
             move = self.record_turn(team)
 
             # record_turn returns a character IFF the team's move
