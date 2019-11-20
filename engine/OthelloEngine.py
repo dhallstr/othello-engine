@@ -9,8 +9,8 @@ class GameEngine:
       self.n = n
       self.time_limit = time_limit
       self.output_file = output_file
-      
-      # game_state is an nxn array containing all of the positions on the board. 
+
+      # game_state is an nxn array containing all of the positions on the board.
       #       'W', 'B' and '-' are the possible values.
       # all_moves is a list of every move in the game (for output file). Example entry for move ('W', (1, 5)):
       #        { "turn": 0,
@@ -24,7 +24,7 @@ class GameEngine:
       self.turn_number = 0
       self.total_time = 0
       self.game_state = [['-' for i in range(n)] for j in range(n)]
-            
+
       # TODO Task 4 Below:
       # Initiaize white_team_file and black_team_file's AIs
       # (might want to refer to http://www.blog.pythonlibrary.org/2012/07/31/advanced-python-how-to-dynamically-load-modules-or-classes/)
@@ -33,8 +33,8 @@ class GameEngine:
       # Add the initial tokens to the board (class names will all be Othello_AI)
       # call play_game (returns winner)
       # call output_game
-      
-      
+
+
    # Makes all of the general calls to play the game
    def play_game(self):
       # TODO Task 6 Below:
@@ -49,8 +49,8 @@ class GameEngine:
       # Also track individual turn times as well as total time
       # Return the winner: 'W', 'B', or 'T'
       pass
-      
-   
+
+
    # Check valid move method
    def check_valid(self, move):
       # TODO Task 5 Below:
@@ -61,16 +61,146 @@ class GameEngine:
       # You will want to use get_all_moves
       # return True if the move is legal, and False otherwise
       pass
-   
+
    # Perform move
    def update_board(self, move):
-      # TODO Task 7 Below:
       # move format: ('B', (i, j)) or ('B', None)
-      # update the board state given the current move and put the move in all_moves
+      # update the board state given the current move
       # if the move is None, do nothing
       # Assume that is a valid move, no need for extra error checking
-      pass
-      
+      if move is not None:
+         r = move[1][0]
+         c = move[1][1]
+         color = move[0]
+
+         #left
+         i = r
+         j = c - 1
+         while j >= 0:
+            if self.game_state[i][j] != color and self.game_state[i][j] != '-':
+               #it's opposite color, keep checking
+               j -= 1
+            else:
+               if self.game_state[i][j] == color:
+                  #it's the same color, go back and change till we are at c-1
+                  for index in range(c - j - 1):
+                     self.game_state[i][j + index + 1] = color
+               #end the loop
+               break
+
+         #left-up direction
+         i = r - 1
+         j = c - 1
+         while i >= 0 and j >= 0:
+            if self.game_state[i][j] != color and self.game_state[i][j] != '-':
+               #it's opposite color, keep checking
+               i -= 1
+               j -= 1
+            else:
+               if self.game_state[i][j] == color:
+                  #it's the same color, go back and change till we are at c-1, r-1
+                  for index in range(c - j - 1):
+                     self.game_state[i + index + 1][j + index + 1] = color
+               #end the loop
+               break
+
+         #up
+         i = r -1
+         j = c
+         while i >= 0:
+            if self.game_state[i][j] != color and self.game_state[i][j] != '-':
+               #it's opposite color, keep checking
+               i -= 1
+            else:
+               if self.game_state[i][j] == color:
+                  #it's the same color, go back and change till we are at r-1
+                  for index in range(r - i - 1):
+                     self.game_state[i + index + 1][j] = color
+               #end the loop
+               break
+
+         #right-up direction
+         i = r - 1
+         j = c + 1
+         while i >= 0 and j < len(self.game_state):
+            if self.game_state[i][j] != color and self.game_state[i][j] != '-':
+               #it's opposite color, keep checking
+               i -= 1
+               j += 1
+            else:
+               if self.game_state[i][j] == color:
+                  #it's the same color, go back and change till we are at r-1, c+1
+                  for index in range(r - i - 1):
+                     self.game_state[i + index + 1][j - index - 1] = color
+               #end loop
+               break
+
+         #right direction
+         i = r
+         j = c + 1
+         while j < len(self.game_state):
+            if self.game_state[i][j] != color and self.game_state[i][j] != '-':
+               #it's opposite color, keep checking
+               j += 1
+            else:
+               if self.game_state[i][j] == color:
+                  #it's the same color, go back and change till we are at c+1
+                  for index in range(j - c):
+                     self.game_state[i][j - index - 1] = color
+               #end loop
+               break
+
+         #right-down
+         i = r + 1
+         j = c + 1
+         while i < len(self.game_state) and j < len(self.game_state):
+            if self.game_state[i][j] != color and self.game_state[i][j] != '-':
+               #it's opposite color, keep checking
+               i += 1
+               j += 1
+            else:
+               if self.game_state[i][j] == color:
+                  #it's the same color, go back and change till we are at r+1,c+1
+                  for index in range(j - c):
+                     self.game_state[i - index - 1][j - index - 1] = color
+               #end loop
+               break
+
+         #down
+         i = r + 1
+         j = c
+         while i < len(self.game_state):
+            if self.game_state[i][j] != color and self.game_state[i][j] != '-':
+               #it's opposite color, keep checking
+               i += 1
+            else:
+               if self.game_state[i][j] == color:
+                  #it's the same color, go back and change till we are at r+1
+                  for index in range(i - r):
+                     self.game_state[i - index - 1][j] = color
+               #end loop
+               break
+
+         #left-down
+         i = r + 1
+         j = c - 1
+         while i < len(self.game_state) and j >= 0:
+            if self.game_state[i][j] != color and self.game_state[i][j] != '-':
+               #it's opposite color, keep checking
+               i += 1
+               j -= 1
+            else:
+               if self.game_state[i][j] == color:
+                  #it's the same color, go back and change till we are at r+1
+                  for index in range(i - r):
+                     self.game_state[i - index - 1][j + index + 1] = color
+               #end loop
+               break
+
+         #set the spot in the game_state
+         self.game_state[r][c] = color
+
+
    # Check for end condition
    def check_end(self):
       # Check the board to see if the game can continue
@@ -82,14 +212,14 @@ class GameEngine:
 
       white_count = sum(row.count('W') for row in self.game_state)
       black_count = sum(row.count('B') for row in self.game_state)
-      
+
       if white_count == black_count:
          return 'T'
       elif white_count > black_count:
          return 'W'
       else:
          return'B'
-   
+
    # write to output file
    # winner should be either 'W' or 'B' or 'T'
    def output_game(self, winner):
