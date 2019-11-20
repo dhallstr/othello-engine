@@ -23,7 +23,7 @@ class GameEngine:
       # turn_times keys each team's color character ('W' or 'B') to a list of their turn times
       # total time is the current sum of all of the player's turns
       self.all_moves = []
-      self.turn_number = 1
+      self.turn_number = 0
       self.turn_times = {'W': [], 'B': []}
       self.total_time = 0
       self.game_state = [['-' for i in range(n)] for j in range(n)]
