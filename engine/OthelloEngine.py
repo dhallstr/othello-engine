@@ -23,7 +23,7 @@ class GameEngine:
       # turn_times keys each team's color character ('W' or 'B') to a list of their turn times
       # total time is the current sum of all of the player's turns
       self.all_moves = []
-      self.turn_number = 0
+      self.turn_number = 1
       self.turn_times = {'W': [], 'B': []}
       self.total_time = 0
       self.game_state = [['-' for i in range(n)] for j in range(n)]
@@ -72,8 +72,9 @@ class GameEngine:
                if gameEnd != None:
                   return gameEnd
 
-         # Increment turn
-         self.turn_number += 1
+               # Increment turn
+               # Odd turns white, even turns black
+               self.turn_number += 1
 
       # Should be unreachable, if check_end functions
       return self.check_end()
@@ -85,7 +86,7 @@ class GameEngine:
          move = team.get_move(self.game_state)
          turnTime = time.time() - start
 
-         if turnTime > self.t or not self.check_valid(move):
+         if turnTime > self.time_limit or not self.check_valid(move):
             raise
 
          # Time keeping
