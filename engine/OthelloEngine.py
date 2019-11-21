@@ -41,7 +41,10 @@ class GameEngine:
       self.game_state[n/2-1][n/2]="B"
       self.game_state[n/2][n/2-1]="B"
       # call play_game (returns winner)
+      self.winner = self.play_game()
       # call output_game
+      self.output_game(self.winner)
+      
 
 
    # Makes all of the general calls to play the game
