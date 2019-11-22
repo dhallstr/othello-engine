@@ -2,7 +2,7 @@ from OthelloEngine import get_all_moves
 import random
 
 class Othello_AI:
-   def init(self, team_type, board_size=8, time_limit=2.0):
+   def __init__(self, team_type, board_size=8, time_limit=2.0):
       # team_type will be either 'W' or 'B', indicating what color you are
       # board_size and time_limit will likely stay constant, but if you want this can add different challanges
       self.team_type = team_type
