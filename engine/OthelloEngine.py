@@ -121,9 +121,9 @@ class GameEngine:
          else:
             return False
       else:
-         if move is in vMoves:
+         if move in vMoves:
             return True
-         else
+         else:
             return False
       pass
 
