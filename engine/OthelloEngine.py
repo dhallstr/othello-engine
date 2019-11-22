@@ -31,11 +31,20 @@ class GameEngine:
       # TODO Task 4 Below:
       # Initiaize white_team_file and black_team_file's AIs
       # (might want to refer to http://www.blog.pythonlibrary.org/2012/07/31/advanced-python-how-to-dynamically-load-modules-or-classes/)
-      self.white_team = None
-      self.black_team = None
+      w_module = __import__(white_team_file)
+      b_module = __import__(black_team_file)
+      self.white_team = getattr(w_module, "Othello_AI")('W', n, time_limit)
+      self.black_team = getattr(b_module, "Othello_AI")('B', n, time_limit)
       # Add the initial tokens to the board (class names will all be Othello_AI)
+      self.game_state[n/2-1][n/2-1]="W"
+      self.game_state[n/2][n/2]="W"
+      self.game_state[n/2-1][n/2]="B"
+      self.game_state[n/2][n/2-1]="B"
       # call play_game (returns winner)
+      self.winner = self.play_game()
       # call output_game
+      self.output_game(self.winner)
+      
 
 
    # Makes all of the general calls to play the game
