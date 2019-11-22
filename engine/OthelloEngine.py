@@ -33,8 +33,8 @@ class GameEngine:
       # (might want to refer to http://www.blog.pythonlibrary.org/2012/07/31/advanced-python-how-to-dynamically-load-modules-or-classes/)
       w_module = __import__(white_team_file)
       b_module = __import__(black_team_file)
-      self.white_team = getattr(w_module, "Othello_AI")
-      self.black_team = getattr(b_module, "Othello_AI")
+      self.white_team = getattr(w_module, "Othello_AI")('W', n, time_limit)
+      self.black_team = getattr(b_module, "Othello_AI")('B', n, time_limit)
       # Add the initial tokens to the board (class names will all be Othello_AI)
       self.game_state[n/2-1][n/2-1]="W"
       self.game_state[n/2][n/2]="W"
