@@ -303,12 +303,20 @@ class GameEngine:
       # See the example json formatted file for details
       # Recall that all_moves will contain a list of every move in the game
 
-      version = self.get_version()
-      white = self.white_team.get_team_name()
-      black = self.black_team.get_team_name()
-      winner = self.winner
-      boardSize = self.n
-      totalTime = self.total_time
+      turns = []
+      for i in range(len(self.all_moves)):
+         player = self.all_moves[i][0]
+         turn_index = i // 2 if player == 'B' else (i - 1) // 2
+         turn = {"turn": i, "player": player, "time": self.turn_times[player][turn_index],
+                 "move": self.all_moves[i][1]}
+         turns.append(turn)
+
+      game_metadata = {"version": self.get_version(), "teamWhite": self.white_team.get_team_name(),
+                       "teamBlack": self.black_team.get_team_name(), "winner": self.winner,
+                       "boardSize": self.n, "totalTime": self.total_time, "turns": turns}
+
+      with open(self.output_file, w) as out:
+         json.dump(game_metadata, out, indent = 3)
 
    def get_version(self):
       """Returns the current version of the game engine
