@@ -1,4 +1,5 @@
 import time
+import json
 
 class GameEngine:
    # white_team_file will be the file name of the white team's AI file
@@ -301,7 +302,18 @@ class GameEngine:
       # write a game file to self.output_file
       # See the example json formatted file for details
       # Recall that all_moves will contain a list of every move in the game
-      pass
+
+      version = self.get_version()
+      white = self.white_team.get_team_name()
+      black = self.black_team.get_team_name()
+      winner = self.winner
+      boardSize = self.n
+      totalTime = self.total_time
+
+   def get_version(self):
+      """Returns the current version of the game engine
+      """
+      return 1.0    # update when the engine version is incremented
 
 def get_all_moves(board_state, player):
    # TODO Task 9 Return a list of all possible moves for the given player ('W' or 'B')
