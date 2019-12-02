@@ -1,5 +1,6 @@
 import time
 import json
+import sys
 
 class GameEngine:
    # white_team_file will be the file name of the white team's AI file
@@ -365,7 +366,7 @@ def is_valid_move(x, y, dx, dy, board_state, player, surrounds):
    return False
 
 if __name__ == "__main__":
-   if len(argv) >= 3:
-      GameEngine(white_team=argv[1], black_team=argv[2], output_file=argv[3])
+   if len(sys.argv) >= 3:
+      GameEngine(white_team_file=sys.argv[1], black_team_file=sys.argv[2], output_file=sys.argv[3])
    else:
-      print("Usage: " + argv[0] + " white_bot.py black_bot.py replay_file.txt")
+      print("Usage: " + sys.argv[0] + " white_bot.py black_bot.py replay_file.txt")
