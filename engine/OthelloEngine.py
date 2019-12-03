@@ -87,7 +87,7 @@ class GameEngine:
                self.turn_number += 1
 
       # Should be unreachable, if check_end functions
-      return self.check_end()
+      return check_end(self.game_state)
 
    # Abstract turn taking
    def record_turn(self, team):
@@ -352,16 +352,16 @@ def update_board(game_state, move):
       game_state[r][c] = color
 
   # Check for end condition
-def check_end(self):
+def check_end(game_state):
    # Check the board to see if the game can continue
    # If the game is over return the winner: 'W', 'B', or 'T'
    # Otherwise, return None
 
-   if len(get_all_moves(self.game_state, 'W')) != 0 or len(get_all_moves(self.game_state, 'B')) != 0:
+   if len(get_all_moves(game_state, 'W')) != 0 or len(get_all_moves(game_state, 'B')) != 0:
       return None
 
-   white_count = sum(row.count('W') for row in self.game_state)
-   black_count = sum(row.count('B') for row in self.game_state)
+   white_count = sum(row.count('W') for row in game_state)
+   black_count = sum(row.count('B') for row in game_state)
 
    if white_count == black_count:
       return 'T'
