@@ -137,25 +137,6 @@ class GameEngine:
             return False
       pass
 
-   # Check for end condition
-   def check_end(self):
-      # Check the board to see if the game can continue
-      # If the game is over return the winner: 'W', 'B', or 'T'
-      # Otherwise, return None
-
-      if len(get_all_moves(self.game_state, 'W')) != 0 or len(get_all_moves(self.game_state, 'B')) != 0:
-         return None
-
-      white_count = sum(row.count('W') for row in self.game_state)
-      black_count = sum(row.count('B') for row in self.game_state)
-
-      if white_count == black_count:
-         return 'T'
-      elif white_count > black_count:
-         return 'W'
-      else:
-         return'B'
-
    # write to output file
    # winner should be either 'W' or 'B' or 'T'
    def output_game(self, winner):
@@ -370,3 +351,21 @@ def update_board(game_state, move):
       #set the spot in the game_state
       game_state[r][c] = color
 
+  # Check for end condition
+def check_end(self):
+   # Check the board to see if the game can continue
+   # If the game is over return the winner: 'W', 'B', or 'T'
+   # Otherwise, return None
+
+   if len(get_all_moves(self.game_state, 'W')) != 0 or len(get_all_moves(self.game_state, 'B')) != 0:
+      return None
+
+   white_count = sum(row.count('W') for row in self.game_state)
+   black_count = sum(row.count('B') for row in self.game_state)
+
+   if white_count == black_count:
+      return 'T'
+   elif white_count > black_count:
+      return 'W'
+   else:
+      return'B'
