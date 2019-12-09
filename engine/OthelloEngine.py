@@ -123,8 +123,8 @@ class GameEngine:
       #    there are no legal moves for this player/
       # You will want to use get_all_moves
       # return True if the move is legal, and False otherwise
-      vMoves = self.get_all_moves(self.game_state, move(0))
-      if move(1) is None:
+      vMoves = get_all_moves(self.game_state, move[0])
+      if move[1] is None:
          if len(vMoves) is 0:
             return True
          else:
