@@ -47,6 +47,7 @@ class GameEngine:
       # call output_game
       self.output_game(self.winner)
       
+    # Makes all of the general calls to play the game
    def play_game(self):
       # TODO Task 6 Below:
       # Loop through all the moves, calling .get_move(board_state) for each team.
@@ -61,33 +62,30 @@ class GameEngine:
       # Return the winner: 'W', 'B', or 'T'
 
       # Sanity check for self.check_end()
-      for row in self.game_state:
-         while '-' in row:
+      while self.check_end() == None:
          # Each team takes their turn
-            for team in (self.black_team, self.white_team):
-               move = self.record_turn(team)
+         for team in (self.black_team, self.white_team):
+             move = self.record_turn(team)
+             # record_turn returns a character IFF the team's move
+             # causes them to lose automatically
+             if type(move) != tuple:
+                 return move
 
-            # record_turn returns a character IFF the team's move
-            # causes them to lose automatically
-               if type(move) != tuple:
-                  return move
+         # Else update the board and check if the game is over
+             else:
+                 self.update_board(move)
+                 self.all_moves.append(move)
 
-            # Else update the board and check if the game is over
-               else:
-                  update_board(self.game_state, move)
-                  self.all_moves.append(move)
+             gameEnd = self.check_end();
+             if gameEnd != None:
+                 return gameEnd
 
-                  gameEnd = check_end(self.game_state);
-                  if gameEnd != None:
-                     return gameEnd
-
-               # Increment turn
-               # Odd turns white, even turns black
-                  self.turn_number += 1
-               
-      # Should be unreachable, if check_end functions
+        # Increment turn
+        # Odd turns white, even turns black
+             self.turn_number += 1
+        # Should be unreachable, if check_end functions
       return self.check_end()
-
+   
    # Abstract turn taking
    def record_turn(self, team):
       try:
