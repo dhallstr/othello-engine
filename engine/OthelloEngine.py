@@ -38,10 +38,10 @@ class GameEngine:
       self.white_team = getattr(w_module, "Othello_AI")('W', n, time_limit)
       self.black_team = getattr(b_module, "Othello_AI")('B', n, time_limit)
       # Add the initial tokens to the board (class names will all be Othello_AI)
-      self.game_state[n/2-1][n/2-1]="W"
-      self.game_state[n/2][n/2]="W"
-      self.game_state[n/2-1][n/2]="B"
-      self.game_state[n/2][n/2-1]="B"
+      self.game_state[n//2-1][n//2-1]="W"
+      self.game_state[n//2][n//2]="W"
+      self.game_state[n//2-1][n//2]="B"
+      self.game_state[n//2][n//2-1]="B"
       # call play_game (returns winner)
       self.winner = self.play_game()
       # call output_game
