@@ -314,7 +314,7 @@ class GameEngine:
                        "teamBlack": self.black_team.get_team_name(), "winner": self.winner,
                        "boardSize": self.n, "totalTime": self.total_time, "turns": turns}
 
-      with open(self.output_file, w) as out:
+      with open(self.output_file, "w") as out:
          json.dump(game_metadata, out, indent = 3)
 
    def get_version(self):
