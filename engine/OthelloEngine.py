@@ -142,7 +142,7 @@ class GameEngine:
       # update the board state given the current move
       # if the move is None, do nothing
       # Assume that is a valid move, no need for extra error checking
-      if move is not None:
+      if move[1] is not None:
          r = move[1][0]
          c = move[1][1]
          color = move[0]
