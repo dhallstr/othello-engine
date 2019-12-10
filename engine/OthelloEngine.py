@@ -311,8 +311,13 @@ class GameEngine:
                  "move": self.all_moves[i][1]}
          turns.append(turn)
 
+      white_count = sum(row.count('W') for row in self.game_state)
+      black_count = sum(row.count('B') for row in self.game_state)
+      game_statistics = {"numTurns": len(turns), "numBlack": black_count, "numWhite":
+                             white_count}
+
       game_metadata = {"version": self.get_version(), "teamWhite": self.white_team.get_team_name(),
-                       "teamBlack": self.black_team.get_team_name(), "winner": self.winner,
+                       "teamBlack": self.black_team.get_team_name(), "winner": self.winner, "statistics": game_statistics,
                        "boardSize": self.n, "totalTime": self.total_time, "turns": turns}
 
       with open(self.output_file, "w") as out:
