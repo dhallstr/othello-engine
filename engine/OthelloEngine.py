@@ -30,7 +30,6 @@ class GameEngine:
       self.total_time = 0
       self.game_state = [['-' for i in range(n)] for j in range(n)]
 
-      # TODO Task 4 Below:
       # Initiaize white_team_file and black_team_file's AIs
       # (might want to refer to http://www.blog.pythonlibrary.org/2012/07/31/advanced-python-how-to-dynamically-load-modules-or-classes/)
       w_module = __import__(white_team_file)
@@ -47,8 +46,8 @@ class GameEngine:
       # call output_game
       self.output_game(self.winner)
       
+    # Makes all of the general calls to play the game
    def play_game(self):
-      # TODO Task 6 Below:
       # Loop through all the moves, calling .get_move(board_state) for each team.
       #       .get_move returns a move. Example move: ('B', (4, 5))
       #       Make sure that the bot doesn't throw an error (try-except) and doesn't exceed
@@ -61,33 +60,28 @@ class GameEngine:
       # Return the winner: 'W', 'B', or 'T'
 
       # Sanity check for self.check_end()
-      for row in self.game_state:
-         while '-' in row:
+      while True:
          # Each team takes their turn
-            for team in (self.black_team, self.white_team):
-               move = self.record_turn(team)
+         for team in (self.black_team, self.white_team):
+             move = self.record_turn(team)
+             # record_turn returns a character IFF the team's move
+             # causes them to lose automatically
+             if type(move) != tuple:
+                 return move
 
-            # record_turn returns a character IFF the team's move
-            # causes them to lose automatically
-               if type(move) != tuple:
-                  return move
+             # Else update the board and check if the game is over
+             else:
+                 self.update_board(move)
+                 self.all_moves.append(move)
 
-            # Else update the board and check if the game is over
-               else:
-                  update_board(self.game_state, move)
-                  self.all_moves.append(move)
+             gameEnd = self.check_end();
+             if gameEnd != None:
+                 return gameEnd
 
-                  gameEnd = check_end(self.game_state);
-                  if gameEnd != None:
-                     return gameEnd
-
-               # Increment turn
-               # Odd turns white, even turns black
-                  self.turn_number += 1
-               
-      # Should be unreachable, if check_end functions
-      return self.check_end()
-
+             # Increment turn
+             # Odd turns white, even turns black
+             self.turn_number += 1
+   
    # Abstract turn taking
    def record_turn(self, team):
       try:
@@ -116,7 +110,6 @@ class GameEngine:
 
    # Check valid move method
    def check_valid(self, move):
-      # TODO Task 5 Below:
       # move format: ('B', (i, j)) or ('B', None)
       # check if the given move is valid for board_state
       # A move of None indicates the player is skipping their turn. This is only valid if
@@ -297,7 +290,6 @@ class GameEngine:
    # write to output file
    # winner should be either 'W' or 'B' or 'T'
    def output_game(self, winner):
-      # TODO Task 2 Below:
       # write a game file to self.output_file
       # See the example json formatted file for details
       # Recall that all_moves will contain a list of every move in the game
@@ -323,7 +315,7 @@ class GameEngine:
       return 1.0    # update when the engine version is incremented
 
 def get_all_moves(board_state, player):
-   # TODO Task 9 Return a list of all possible moves for the given player ('W' or 'B')
+   # Return a list of all possible moves for the given player ('W' or 'B')
    # Example return value: [('W', (2, 5)), ('W', (6, 4)), ... ]
    moves = []
    adjacencies = get_adjacencies()
