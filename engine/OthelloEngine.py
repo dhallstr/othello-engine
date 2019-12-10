@@ -1,6 +1,7 @@
 import time
 import json
 import sys
+import copy
 
 class GameEngine:
    # white_team_file will be the file name of the white team's AI file
@@ -32,6 +33,10 @@ class GameEngine:
 
       # Initiaize white_team_file and black_team_file's AIs
       # (might want to refer to http://www.blog.pythonlibrary.org/2012/07/31/advanced-python-how-to-dynamically-load-modules-or-classes/)
+      if white_team_file.endswith('.py'):
+         white_team_file = white_team_file[:-3]
+      if black_team_file.endswith('.py'):
+         black_team_file = black_team_file[:-3]
       w_module = __import__(white_team_file)
       b_module = __import__(black_team_file)
       self.white_team = getattr(w_module, "Othello_AI")('W', n, time_limit)
@@ -86,7 +91,7 @@ class GameEngine:
    def record_turn(self, team):
       try:
          start = time.time()
-         move = team.get_move(self.game_state)
+         move = team.get_move(copy.deepcopy(self.game_state))
          turnTime = time.time() - start
 
          if turnTime > self.time_limit:
@@ -116,6 +121,10 @@ class GameEngine:
       #    there are no legal moves for this player/
       # You will want to use get_all_moves
       # return True if the move is legal, and False otherwise
+      current_team = 'W' if self.turn_number % 2 == 1 else 'B'
+      if (move[0] != current_team):
+          return False
+      
       vMoves = get_all_moves(self.game_state, move[0])
       if move[1] is None:
          if len(vMoves) is 0:
