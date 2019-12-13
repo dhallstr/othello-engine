@@ -15,7 +15,7 @@ class Othello_AI:
       moves = get_all_moves(board_state, self.team_type)
       if len(moves) > 0:
          return random.choice(moves)
-      return None
+      return (self.team_type, None)
       
    def get_team_name(self):
       # returns a string containing your team name

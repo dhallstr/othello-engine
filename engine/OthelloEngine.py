@@ -46,10 +46,6 @@ class GameEngine:
       self.game_state[n//2][n//2]="W"
       self.game_state[n//2-1][n//2]="B"
       self.game_state[n//2][n//2-1]="B"
-      # call play_game (returns winner)
-      self.winner = self.play_game()
-      # call output_game
-      self.output_game(self.winner)
       
     # Makes all of the general calls to play the game
    def play_game(self):
@@ -371,6 +367,11 @@ def is_valid_move(x, y, dx, dy, board_state, player, surrounds):
 
 if __name__ == "__main__":
    if len(sys.argv) >= 3:
-      GameEngine(white_team_file=sys.argv[1], black_team_file=sys.argv[2], output_file=sys.argv[3])
+      g = GameEngine(white_team_file=sys.argv[1], black_team_file=sys.argv[2], output_file=sys.argv[3])
+      
+      # call play_game (returns winner)
+      g.winner = g.play_game()
+      # call output_game
+      g.output_game(g.winner)
    else:
       print("Usage: " + sys.argv[0] + " white_bot.py black_bot.py replay_file.txt")
