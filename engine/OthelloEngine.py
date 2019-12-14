@@ -129,6 +129,11 @@ class GameEngine:
       # You will want to use get_all_moves
       # return True if the move is legal, and False otherwise
       current_team = 'W' if self.turn_number % 2 == 1 else 'B'
+      
+      if (move == None):
+          print("None is not a valid move. Try (team, None)")
+          return False
+      
       if (move[0] != current_team):
           return False
       
