@@ -2,6 +2,12 @@ import time
 import json
 import sys
 import copy
+import signal
+
+def timeout_handler(signum, frame):
+    raise Exception
+
+signal.signal(signal.SIGALRM, timeout_handler)
 
 class GameEngine:
    # white_team_file will be the file name of the white team's AI file
@@ -85,10 +91,12 @@ class GameEngine:
    
    # Abstract turn taking
    def record_turn(self, team):
+      signal.alarm(int(self.time_limit) + 1)
       try:
          start = time.time()
          move = team.get_move(copy.deepcopy(self.game_state))
          turnTime = time.time() - start
+         signal.alarm(0)
 
          if turnTime > self.time_limit:
             raise Exception("Team {} exceeded their time limit: {}".format(team.team_type, turnTime))
@@ -106,7 +114,10 @@ class GameEngine:
       # if their turn exceeds the time limit
       # or their move is not valid
       # or their class raises an exception
-      except:
+      except Exception as e:
+         print(str(e))
+         if len(str(e)) < 2:
+             print("Team {} exceeded their time limit".format(team.team_type))
          return 'B' if team.team_type == 'W' else 'W'
 
    # Check valid move method
