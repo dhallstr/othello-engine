@@ -2,6 +2,12 @@ import time
 import json
 import sys
 import copy
+import signal
+
+def timeout_handler(signum, frame):
+    raise Exception
+
+signal.signal(signal.SIGALRM, timeout_handler)
 
 class GameEngine:
    # white_team_file will be the file name of the white team's AI file
@@ -46,10 +52,6 @@ class GameEngine:
       self.game_state[n//2][n//2]="W"
       self.game_state[n//2-1][n//2]="B"
       self.game_state[n//2][n//2-1]="B"
-      # call play_game (returns winner)
-      self.winner = self.play_game()
-      # call output_game
-      self.output_game(self.winner)
       
     # Makes all of the general calls to play the game
    def play_game(self):
@@ -89,10 +91,12 @@ class GameEngine:
    
    # Abstract turn taking
    def record_turn(self, team):
+      signal.alarm(int(self.time_limit) + 1)
       try:
          start = time.time()
          move = team.get_move(copy.deepcopy(self.game_state))
          turnTime = time.time() - start
+         signal.alarm(0)
 
          if turnTime > self.time_limit:
             raise Exception("Team {} exceeded their time limit: {}".format(team.team_type, turnTime))
@@ -110,7 +114,10 @@ class GameEngine:
       # if their turn exceeds the time limit
       # or their move is not valid
       # or their class raises an exception
-      except:
+      except Exception as e:
+         print(str(e))
+         if len(str(e)) < 2:
+             print("Team {} exceeded their time limit".format(team.team_type))
          return 'B' if team.team_type == 'W' else 'W'
 
    # Check valid move method
@@ -122,6 +129,11 @@ class GameEngine:
       # You will want to use get_all_moves
       # return True if the move is legal, and False otherwise
       current_team = 'W' if self.turn_number % 2 == 1 else 'B'
+      
+      if (move == None):
+          print("None is not a valid move. Try (team, None)")
+          return False
+      
       if (move[0] != current_team):
           return False
       
@@ -371,6 +383,11 @@ def is_valid_move(x, y, dx, dy, board_state, player, surrounds):
 
 if __name__ == "__main__":
    if len(sys.argv) >= 3:
-      GameEngine(white_team_file=sys.argv[1], black_team_file=sys.argv[2], output_file=sys.argv[3])
+      g = GameEngine(white_team_file=sys.argv[1], black_team_file=sys.argv[2], output_file=sys.argv[3])
+      
+      # call play_game (returns winner)
+      g.winner = g.play_game()
+      # call output_game
+      g.output_game(g.winner)
    else:
       print("Usage: " + sys.argv[0] + " white_bot.py black_bot.py replay_file.txt")
