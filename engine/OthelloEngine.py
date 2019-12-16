@@ -290,8 +290,8 @@ class GameEngine:
          #set the spot in the game_state
          self.game_state[r][c] = color
 
-         # Add the current board state to list of all board states for visualizer purposes
-         self.all_board_states.append(np.array(self.game_state).flatten())
+      # Add the current board state to list of all board states for visualizer purposes
+      self.all_board_states.append(np.array(self.game_state).flatten())
 
 
    # Check for end condition
