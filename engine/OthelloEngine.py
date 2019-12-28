@@ -71,7 +71,8 @@ class GameEngine:
       # Sanity check for self.check_end()
       while True:
          # Each team takes their turn
-         for team in (self.black_team, self.white_team):
+         for team in ({'bot': self.black_team, 'color': 'B'}, {
+'bot': self.white_team, 'color': 'W'}):
              move = self.record_turn(team)
              # record_turn returns a character IFF the team's move
              # causes them to lose automatically
@@ -93,20 +94,21 @@ class GameEngine:
    
    # Abstract turn taking
    def record_turn(self, team):
+      bot, color = team['bot'], team['color']
       signal.alarm(int(self.time_limit) + 1)
       try:
          start = time.time()
-         move = team.get_move(copy.deepcopy(self.game_state))
+         move = bot.get_move(copy.deepcopy(self.game_state))
          turnTime = time.time() - start
          signal.alarm(0)
 
          if turnTime > self.time_limit:
-            raise Exception("Team {} exceeded their time limit: {}".format(team.team_type, turnTime))
+            raise Exception("Team {} exceeded their time limit: {}".format(color, turnTime))
          elif not self.check_valid(move):
-            raise Exception("Team {} made an invalid move: {}".format(team.team_type, move))
+            raise Exception("Team {} made an invalid move: {}".format(color, move))
 
          # Time keeping
-         self.turn_times[team.team_type].append(turnTime)
+         self.turn_times[color].append(turnTime)
 
          self.total_time += turnTime
 
@@ -119,8 +121,8 @@ class GameEngine:
       except Exception as e:
          print(str(e))
          if len(str(e)) < 2:
-             print("Team {} exceeded their time limit".format(team.team_type))
-         return 'B' if team.team_type == 'W' else 'W'
+             print("Team {} exceeded their time limit".format(color))
+         return 'B' if color == 'W' else 'W'
 
    # Check valid move method
    def check_valid(self, move):
